@@ -3,6 +3,7 @@ import React,{ useState } from 'react';
 import SearchForm from './components/SearchForm';
 
 import { fetchProfile } from './services/fetchUser';
+import UserProfile from './components/UserProfile';
 
 
 
@@ -40,11 +41,7 @@ function App() {
       <div className="max-w-md w-full p-4">
         {loading && <p className="text-center text-lg">Loading...</p>}
         {error && <p className="text-center text-lg text-red-500">{error}</p>}
-        {user && (
-          <pre className="bg-white p-4 rounded border">
-            {JSON.stringify(user, null, 2)}
-          </pre>
-        )}
+        {user && <UserProfile user={user} />}
       </div>
     </div>
     </>
