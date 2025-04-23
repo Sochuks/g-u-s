@@ -1,28 +1,32 @@
-import { useState } from 'react';
-import axios from 'axios';
+import React,{ useState } from 'react';
 
 import SearchForm from './components/SearchForm';
 
-const apiUrl = import.meta.env.VITE_API_URL
+import { fetchProfile } from './services/fetchUser';
 
 
 
 function App() {
+  // set state
+  const [user, setUser] = useState(null);
+  const [loading, setLoading]= useState(false);
+  const [error, setError] = useState(null);
 
-  const fetchProfile = async(username) =>{
+
+  const handleSearch = async (username)=>{
+    // Initial States
+    setLoading(true);
+    setError(null);
+    setUser(null);
+
     try {
-      const response = await axios.get(`${apiUrl}/${username}`);
-      return response.data
+      const data = await fetchProfile(username);
+      setUser(data)
     } catch (error) {
-      if(error.response && error.response === '404'){
-        throw new Error('User not Found');
-      }
-      throw new Error('An error occured fetching while fetching user')
+      setError(error.message)
+    } finally {
+      setLoading(false);
     }
-  }
-
-  const handleSearch = (username)=>{
-    console.log("Search Results for", username)
   }
 
   return (
@@ -32,6 +36,16 @@ function App() {
       <h1 className="text-2xl font-bold my-6">GitHub User Search</h1>
       {/* Search Bar */}
       <SearchForm onSearch={handleSearch} />
+
+      <div className="max-w-md w-full p-4">
+        {loading && <p className="text-center text-lg">Loading...</p>}
+        {error && <p className="text-center text-lg text-red-500">{error}</p>}
+        {user && (
+          <pre className="bg-white p-4 rounded border">
+            {JSON.stringify(user, null, 2)}
+          </pre>
+        )}
+      </div>
     </div>
     </>
   )
