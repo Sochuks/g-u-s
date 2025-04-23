@@ -1,6 +1,6 @@
 import React from 'react'
 
-const UserProfile = (user) => {
+const UserProfile = ({user}) => {
   return (
     <div className="bg-white p-6 rounded-lg border shadow-md max-w-md w-full">
     <img

@@ -4,6 +4,7 @@ import SearchForm from './components/SearchForm';
 
 import { fetchProfile } from './services/fetchUser';
 import UserProfile from './components/UserProfile';
+import ErrorMessage from './components/ErrorMessage';
 
 
 
@@ -39,8 +40,7 @@ function App() {
       <SearchForm onSearch={handleSearch} />
 
       <div className="max-w-md w-full p-4">
-        {loading && <p className="text-center text-lg">Loading...</p>}
-        {error && <p className="text-center text-lg text-red-500">{error}</p>}
+        <ErrorMessage loading={loading} error={error} />
         {user && <UserProfile user={user} />}
       </div>
     </div>
