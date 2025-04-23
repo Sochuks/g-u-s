@@ -1,9 +1,26 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import axios from 'axios';
 
 import SearchForm from './components/SearchForm';
 
+const apiUrl = import.meta.env.VITE_API_URL
+
+
 
 function App() {
+
+  const fetchProfile = async(username) =>{
+    try {
+      const response = await axios.get(`${apiUrl}/${username}`);
+      return response.data
+    } catch (error) {
+      if(error.response && error.response === '404'){
+        throw new Error('User not Found');
+      }
+      throw new Error('An error occured fetching while fetching user')
+    }
+  }
+
   const handleSearch = (username)=>{
     console.log("Search Results for", username)
   }
